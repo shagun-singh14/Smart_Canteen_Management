@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Canteen System - DBMS Project Report</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        @page {
+            size: A4;
+            margin: 18mm 16mm 18mm 16mm;
+            @bottom-right {
+                content: counter(page);
+            }
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1e293b;
+            line-height: 1.6;
+            font-size: 13.5px;
+            background: #ffffff;
+        }
+        .cover-page {
+            page-break-after: always;
+            padding: 80px 20px 40px;
+            text-align: center;
+            border-bottom: 2px solid #e2e8f0;
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .cover-badge {
+            display: inline-block;
+            background: #0284c7;
+            color: white;
+            padding: 6px 18px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+        .cover-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 36px;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+        .cover-subtitle {
+            font-size: 17px;
+            color: #475569;
+            max-width: 650px;
+            margin: 0 auto 30px;
+            line-height: 1.5;
+        }
+        .meta-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 480px;
+            margin: 30px auto;
+            text-align: left;
+        }
+        .meta-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #edf2f7;
+            font-size: 13px;
+        }
+        .meta-item:last-child {
+            border-bottom: none;
+        }
+        .meta-label {
+            color: #64748b;
+            font-weight: 600;
+        }
+        .meta-value {
+            color: #0f172a;
+            font-weight: 700;
+        }
+        
+        .page-break {
+            page-break-before: always;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+            color: #0f172a;
+            page-break-after: avoid;
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: 800;
+            border-bottom: 2px solid #0284c7;
+            padding-bottom: 8px;
+            margin-top: 28px;
+            margin-bottom: 16px;
+        }
+        h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 22px;
+            margin-bottom: 10px;
+            color: #0369a1;
+        }
+        h3 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-top: 14px;
+            margin-bottom: 6px;
+        }
+        p {
+            margin-bottom: 10px;
+            color: #334155;
+        }
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 12px;
+            color: #334155;
+        }
+        li {
+            margin-bottom: 4px;
+        }
+
+        .concept-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid #0284c7;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+            page-break-inside: avoid;
+        }
+        .concept-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .concept-simple {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0 18px;
+            font-size: 12.5px;
+            page-break-inside: avoid;
+        }
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 7px 10px;
+            text-align: left;
+        }
+        th {
+            background: #f1f5f9;
+            color: #0f172a;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+        }
+        tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        pre, code {
+            font-family: 'JetBrains Mono', Consolas, monospace;
+        }
+        code {
+            background: #f1f5f9;
+            color: #0f172a;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        pre {
+            background: #0f172a;
+            color: #f8fafc;
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 11.5px;
+            line-height: 1.45;
+            overflow-x: auto;
+            margin: 8px 0 14px;
+            page-break-inside: avoid;
+        }
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+            border: none;
+        }
+
+        .step-box {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            page-break-inside: avoid;
+        }
+        .step-num {
+            display: inline-block;
+            background: #0284c7;
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 22px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-right: 6px;
+        }
+        .step-title {
+            font-weight: 700;
+            color: #0f172a;
+            font-size: 13.5px;
+        }
+
+        .tip-box {
+            background: #fefce8;
+            border: 1px solid #fef08a;
+            border-left: 4px solid #eab308;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            color: #854d0e;
+            margin: 12px 0;
+            page-break-inside: avoid;
+        }
+        .success-box {
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            border-left: 4px solid #10b981;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            color: #065f46;
+            margin: 12px 0;
+            page-break-inside: avoid;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- COVER PAGE -->
+    <div class="cover-page">
+        <div>
+            <div class="cover-badge">Database Management Systems (DBMS) Project</div>
+            <h1 class="cover-title">Smart Canteen Management System</h1>
+            <p class="cover-subtitle">
+                A Full-Stack Relational Database System with Real-Time Kitchen Display (KDS), Automated Recipe Stock Deductions, and ACID Transactional Integrity.
+            </p>
+        </div>
+
+        <div class="meta-box">
+            <div class="meta-item">
+                <span class="meta-label">Author / Lead Developer:</span>
+                <span class="meta-value">Shagun Singh</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Primary Database:</span>
+                <span class="meta-value">MySQL 8.0 (InnoDB Engine)</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Database Name:</span>
+                <span class="meta-value"><code>canteen_db</code></span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Frontend & Backend:</span>
+                <span class="meta-value">HTML5 / Vanilla CSS / Node.js Express</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Key DBMS Concepts:</span>
+                <span class="meta-value">3NF, ACID, Triggers, Views, Procedures</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Documentation Type:</span>
+                <span class="meta-value">Project Report & SQL Workbench Guide</span>
+            </div>
+        </div>
+
+        <div style="font-size: 11px; color: #94a3b8;">
+            Document Generated Automatically • Canteen Management System • Version 2.0
+        </div>
+    </div>
+
+    <!-- TABLE OF CONTENTS -->
+    <div class="page-break"></div>
+    <h1>Executive Summary & Architecture</h1>
+    <p>
+        The <strong>Smart Canteen Management System</strong> solves campus dining bottlenecks through a digital ordering workflow tightly coupled with a high-performance relational database. Instead of manual token slips and paper inventory registers, the system handles order queuing, student balance verification, recipe composition deductions, and sales metrics entirely through structured database constraints and transaction boundaries.
+    </p>
+
+    <h2>High-Level System Architecture</h2>
+    <pre><code>+-----------------------------------------------------------------------------------+
+|                        SMART CANTEEN SYSTEM ARCHITECTURE                          |
++-----------------------------------------------------------------------------------+
+|  [Student Ordering Portal]       [Kitchen Display (KDS)]     [Inventory & Stock]  |
+|   - Digital Menu & Wallet         - Token Number Kanban       - Recipe BOM        |
+|   - Order Checkout                - Status: Placed->Prep->Ready - Auto Stock Deduct|
++-----------------------------------------------------------------------------------+
+                                         |
+                                         v (RESTful API / Express.js)
++-----------------------------------------------------------------------------------+
+|                                MYSQL 8.0 DATABASE                                 |
+|  1. Relational Schema & 3NF Normalization (12 interrelated tables)                |
+|  2. ACID Transactions (START TRANSACTION, COMMIT, ROLLBACK)                        |
+|  3. Automated Triggers (Stock deduction on order insert, price audit trail)       |
+|  4. Stored Procedures & Functions (sp_update_order_status, fn_calculate_bill)       |
+|  5. Referential Integrity & Domain Constraints (CHECK, FK CASCADE/RESTRICT)      |
+|  6. Views & Aggregations (Live KDS Queue, Daily Gross Sales, Peak Rush Hours)     |
+|  7. B-Tree Indexes (Sub-millisecond queries on orders & inventory)                |
++-----------------------------------------------------------------------------------+</code></pre>
+
+    <h1>Part 1: DBMS Concepts Implemented & Where They Work</h1>
+
+    <div class="concept-card">
+        <div class="concept-title">1. Relational Schema & 3NF Normalization</div>
+        <div class="concept-simple">In Simple Words: Splitting data into clean, specialized tables linked by IDs so data is never duplicated or messy.</div>
+        <p><strong>Where It Works:</strong></p>
+        <ul>
+            <li><code>students</code>: Stores only student identity, registration number, email, and wallet money.</li>
+            <li><code>categories</code>: Food categories (South Indian, North Indian, Snacks, Beverages).</li>
+            <li><code>menu_items</code>: Food dishes, prices, and preparation times.</li>
+            <li><code>ingredients</code>: Raw grocery stock items (Rice Batter, Coffee Beans, Paneer, Milk).</li>
+            <li><code>item_ingredients</code> (Bill of Materials): Resolves the <strong>Many-to-Many (M:N)</strong> relationship between dishes and ingredients. One dish uses many ingredients; one ingredient is used in many dishes.</li>
+            <li><code>orders</code> and <code>order_items</code>: Separates the order header from the line items. Allows one student to order 3 different dishes without duplicating student data (1NF, 2NF, 3NF compliance).</li>
+        </ul>
+    </div>
+
+    <div class="concept-card">
+        <div class="concept-title">2. Primary Keys, Foreign Keys & Referential Integrity</div>
+        <div class="concept-simple">In Simple Words: Primary keys are unique barcodes for each row. Foreign keys link tables together and prevent invalid records.</div>
+        <p><strong>Where It Works:</strong></p>
+        <ul>
+            <li><code>students.student_id</code> (PK) connects to <code>orders.student_id</code> (FK): A non-existent student can never place an order.</li>
+            <li><code>categories.category_id</code> connects to <code>menu_items.category_id</code> with <code>ON DELETE CASCADE</code>: If a category is deleted, items under it are safely removed.</li>
+            <li><code>ingredients.ingredient_id</code> connects to <code>item_ingredients.ingredient_id</code> with <code>ON DELETE RESTRICT</code>: The database strictly prevents deleting "Milk" or "Rice" if an existing recipe relies on it!</li>
+        </ul>
+    </div>
+
+    <div class="page-break"></div>
+
+    <div class="concept-card">
+        <div class="concept-title">3. Domain Integrity & Validation Constraints</div>
+        <div class="concept-simple">In Simple Words: Strict rules written into MySQL so negative balances or wrong numbers are rejected automatically.</div>
+        <p><strong>Where It Works:</strong></p>
+        <ul>
+            <li><code>CHECK (wallet_balance >= 0)</code>: Guarantees a student's campus wallet balance can never fall below zero.</li>
+            <li><code>CHECK (price > 0)</code>: Ensures all menu items have a valid positive selling price.</li>
+            <li><code>CHECK (rating BETWEEN 1 AND 5)</code>: In the <code>feedback</code> table, ensures star reviews are strictly between 1 and 5.</li>
+            <li><code>UNIQUE (email)</code> & <code>UNIQUE (reg_no)</code>: Rejects duplicate student or staff registrations.</li>
+            <li><code>ENUM</code> Domains: Restricts statuses to valid workflow stages:
+                <ul>
+                    <li><code>orders.status</code>: <code>'Placed'</code>, <code>'Preparing'</code>, <code>'Ready'</code>, <code>'Picked Up'</code>, <code>'Cancelled'</code></li>
+                    <li><code>payments.payment_method</code>: <code>'Student Wallet'</code>, <code>'UPI'</code>, <code>'Card'</code>, <code>'Cash'</code></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="concept-card">
+        <div class="concept-title">4. ACID Transactions (Transaction Processing)</div>
+        <div class="concept-simple">In Simple Words: Ensuring multi-step purchases succeed completely or fail completely with zero lost money or half-created orders.</div>
+        <p><strong>Where It Works (<code>server/index.js</code> order checkout endpoint):</strong></p>
+        <ul>
+            <li><strong>Atomicity:</strong> Placing an order requires (1) deducting student balance, (2) inserting into <code>orders</code>, (3) creating rows in <code>order_items</code>, and (4) deducting recipe stock. If any step fails, <code>ROLLBACK</code> undoes everything.</li>
+            <li><strong>Consistency:</strong> The database moves from one valid state to another, satisfying all CHECK and FK constraints.</li>
+            <li><strong>Isolation:</strong> InnoDB row-level locking ensures that if two students order the last Samosa at the exact same millisecond, race conditions cannot oversell stock.</li>
+            <li><strong>Durability:</strong> Once <code>COMMIT</code> is executed, the transaction is permanently written to the redo log and survives server restarts.</li>
+        </ul>
+    </div>
+
+    <div class="concept-card">
+        <div class="concept-title">5. Database Triggers (Active Database)</div>
+        <div class="concept-simple">In Simple Words: Automated programs stored in MySQL that run automatically whenever a table changes.</div>
+        <p><strong>Where It Works (<code>database/03_procedures_and_triggers.sql</code>):</strong></p>
+        <ul>
+            <li><code>trg_check_and_deduct_stock</code> (<code>AFTER INSERT ON order_items</code>): When a dish is ordered, this trigger iterates through its recipe in <code>item_ingredients</code>, verifies stock availability, subtracts the required amounts from <code>ingredients</code>, and logs the change into <code>inventory_logs</code>. If stock is missing, it raises <code>SIGNAL SQLSTATE '45000'</code> aborting the order.</li>
+            <li><code>trg_audit_price_change</code> (<code>BEFORE UPDATE ON menu_items</code>): Every time a dish's price is updated, this trigger automatically logs the old price, new price, user, and timestamp into <code>price_audit_log</code> for financial transparency.</li>
+        </ul>
+    </div>
+
+    <div class="concept-card">
+        <div class="concept-title">6. Stored Procedures & Functions</div>
+        <div class="concept-simple">In Simple Words: Pre-compiled SQL functions on the server that can be executed with a single call.</div>
+        <p><strong>Where It Works (<code>database/03_procedures_and_triggers.sql</code>):</strong></p>
+        <ul>
+            <li><code>sp_update_order_status(order_id, new_status)</code>: Safely advances order status from Placed to Preparing, Ready, or Picked Up.</li>
+            <li><code>sp_restock_ingredient(ingredient_id, quantity)</code>: Restocks raw material stock and logs the restock transaction.</li>
+            <li><code>fn_calculate_bill(subtotal, tax_rate)</code>: Computes order totals with campus facility charges.</li>
+        </ul>
+    </div>
+
+    <div class="page-break"></div>
+
+    <div class="concept-card">
+        <div class="concept-title">7. Views & Analytics Aggregations (JOINs, GROUP BY, SUM, AVG)</div>
+        <div class="concept-simple">In Simple Words: Saved virtual tables that combine data and compute business summaries without manual calculations.</div>
+        <p><strong>Where It Works (<code>database/05_analytics_views_queries.sql</code>):</strong></p>
+        <ul>
+            <li><code>v_active_kds_queue</code>: Combines <code>orders</code>, <code>students</code>, and <code>order_items</code> to show token tickets on the Kitchen Display System.</li>
+            <li><code>v_daily_sales_summary</code>: Calculates gross revenue, total token count, and average order size.</li>
+            <li><code>v_inventory_stock_status</code>: Compares stock against threshold to flag <code>'OK'</code>, <code>'LOW STOCK'</code>, or <code>'CRITICAL'</code>.</li>
+            <li>Peak Rush Hour Query: Groups orders by <code>HOUR(order_date)</code> to display busiest times of day.</li>
+        </ul>
+    </div>
+
+    <div class="concept-card">
+        <div class="concept-title">8. Storage Engine & Indexing</div>
+        <div class="concept-simple">In Simple Words: B-Tree indexes speed up lookups like a book index, finding records in microseconds.</div>
+        <p><strong>Where It Works (<code>database/01_schema.sql</code>):</strong></p>
+        <ul>
+            <li><code>idx_orders_date_status ON orders(order_date, status)</code>: Makes the live queue load instantly.</li>
+            <li><code>idx_orders_student ON orders(student_id)</code>: Speeds up student token queries.</li>
+            <li><code>idx_ingredients_stock ON ingredients(current_stock, min_threshold)</code>: Powers real-time low-stock alerts.</li>
+        </ul>
+    </div>
+
+    <h1>Part 2: Database Schema Summary Table</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Table Name</th>
+                <th>Primary Key</th>
+                <th>Key Columns</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>students</code></td>
+                <td><code>student_id</code></td>
+                <td>reg_no, full_name, email, wallet_balance</td>
+                <td>Student records, campus Google login, wallet balance</td>
+            </tr>
+            <tr>
+                <td><code>categories</code></td>
+                <td><code>category_id</code></td>
+                <td>category_name, description</td>
+                <td>Food categories (South Indian, Snacks, Beverages)</td>
+            </tr>
+            <tr>
+                <td><code>menu_items</code></td>
+                <td><code>item_id</code></td>
+                <td>category_id (FK), item_name, price, is_available</td>
+                <td>Dishes offered on student menu with prices</td>
+            </tr>
+            <tr>
+                <td><code>ingredients</code></td>
+                <td><code>ingredient_id</code></td>
+                <td>ingredient_name, unit, current_stock, min_threshold</td>
+                <td>Raw materials inventory stock levels in kitchen</td>
+            </tr>
+            <tr>
+                <td><code>item_ingredients</code></td>
+                <td><code>(item_id, ingredient_id)</code></td>
+                <td>quantity_required</td>
+                <td>Bill of Materials (BOM) recipe composition</td>
+            </tr>
+            <tr>
+                <td><code>orders</code></td>
+                <td><code>order_id</code></td>
+                <td>student_id (FK), status, total_amount, order_date</td>
+                <td>Customer orders and official Token Number</td>
+            </tr>
+            <tr>
+                <td><code>order_items</code></td>
+                <td><code>order_item_id</code></td>
+                <td>order_id (FK), item_id (FK), quantity, unit_price</td>
+                <td>Individual dishes included in an order</td>
+            </tr>
+            <tr>
+                <td><code>payments</code></td>
+                <td><code>payment_id</code></td>
+                <td>order_id (FK), payment_method, transaction_ref</td>
+                <td>Payment transactions and digital receipts</td>
+            </tr>
+            <tr>
+                <td><code>kitchen_staff</code></td>
+                <td><code>staff_id</code></td>
+                <td>full_name, email, role, is_active</td>
+                <td>Kitchen staff logins and roles (Chef, Manager)</td>
+            </tr>
+            <tr>
+                <td><code>feedback</code></td>
+                <td><code>feedback_id</code></td>
+                <td>order_id (FK), student_id (FK), rating, comments</td>
+                <td>Student meal reviews (1 to 5 stars)</td>
+            </tr>
+            <tr>
+                <td><code>inventory_logs</code></td>
+                <td><code>log_id</code></td>
+                <td>ingredient_id (FK), change_type, quantity_changed</td>
+                <td>Audit trail of all raw material deductions & restocks</td>
+            </tr>
+            <tr>
+                <td><code>price_audit_log</code></td>
+                <td><code>audit_id</code></td>
+                <td>item_id, old_price, new_price, changed_at</td>
+                <td>Automatic trigger log of all dish price modifications</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="page-break"></div>
+
+    <h1>Part 3: Step-by-Step MySQL Workbench Guide</h1>
+
+    <h2>Connecting and Locating Tables</h2>
+    <div class="step-box">
+        <span class="step-num">1</span>
+        <span class="step-title">Open MySQL Workbench & Connect</span>
+        <p style="margin-top: 6px;">Double-click <strong>Local instance 3306</strong> and enter your MySQL root password (<code>11658369_Sql</code>).</p>
+    </div>
+    <div class="step-box">
+        <span class="step-num">2</span>
+        <span class="step-title">Locate Database Tables</span>
+        <p style="margin-top: 6px;">In the left sidebar under <strong>Navigator</strong>, click the <strong>Schemas</strong> tab. Expand <strong><code>canteen_db</code></strong> &gt; Expand <strong><code>Tables</code></strong>.</p>
+    </div>
+
+    <h2>Method 1: Visual Spreadsheet Editing (No Code Needed)</h2>
+    <p>Hover over any table (e.g., <code>students</code>, <code>menu_items</code>, <code>ingredients</code>) and click the <strong>tiny Table Grid icon</strong> on the right. A spreadsheet will open.</p>
+
+    <div class="step-box">
+        <span class="step-title">➕ How to Add a New Row:</span>
+        <ol style="margin-top: 6px; margin-left: 20px;">
+            <li>Scroll down to the bottom empty row marked with an asterisk (<code>*</code>).</li>
+            <li>Double-click the cells and type values (Name, Email, Price, etc.).</li>
+            <li>Leave the Primary Key column (e.g. <code>student_id</code>) blank or <code>NULL</code> — MySQL will auto-number it!</li>
+            <li>Click the blue <strong>Apply</strong> button at the bottom right.</li>
+            <li>In the popup window, click <strong>Apply</strong> &gt; <strong>Finish</strong>.</li>
+        </ol>
+    </div>
+
+    <div class="step-box">
+        <span class="step-title">✏️ How to Edit an Existing Row:</span>
+        <ol style="margin-top: 6px; margin-left: 20px;">
+            <li>Double-click any cell you want to change (e.g., change <code>wallet_balance</code> or dish <code>price</code>).</li>
+            <li>Type the new value and press <strong>Enter</strong>.</li>
+            <li>Click the blue <strong>Apply</strong> button at the bottom right &gt; <strong>Apply</strong> &gt; <strong>Finish</strong>.</li>
+        </ol>
+    </div>
+
+    <div class="step-box">
+        <span class="step-title">🗑️ How to Delete a Row:</span>
+        <ol style="margin-top: 6px; margin-left: 20px;">
+            <li>Right-click the grey row number box on the far left of the row you wish to remove.</li>
+            <li>Choose <strong>Delete Row(s)</strong>.</li>
+            <li>Click the blue <strong>Apply</strong> button at the bottom right &gt; <strong>Apply</strong> &gt; <strong>Finish</strong>.</li>
+        </ol>
+    </div>
+
+    <div class="tip-box">
+        <strong>Important Rule:</strong> Edits in MySQL Workbench remain in a local draft state until you click the blue <strong>Apply</strong> button! Always click Apply to save changes.
+    </div>
+
+    <h2>Method 2: Quick Copy-Paste SQL Commands</h2>
+    <p>Open a new SQL tab in Workbench (<strong>Ctrl + T</strong>), paste any command below, and press the ⚡ lightning bolt icon:</p>
+
+    <h3>1. Managing Students (<code>students</code>)</h3>
+    <pre><code>-- View all students
+SELECT * FROM canteen_db.students;
+
+-- Add a new student
+INSERT INTO canteen_db.students (reg_no, full_name, email, phone, wallet_balance)
+VALUES ('24BCY99999', 'Priya Patel', 'priya.patel@campus.edu', '9876543210', 500.00);
+
+-- Add money to student wallet (e.g. Add ₹500 to Shagun Singh)
+UPDATE canteen_db.students 
+SET wallet_balance = wallet_balance + 500.00 
+WHERE email = 'shagun.24bcy10379@vitbhopal.ac.in';
+
+-- Delete student
+DELETE FROM canteen_db.students WHERE reg_no = '24BCY99999';</code></pre>
+
+    <div class="page-break"></div>
+
+    <h3>2. Managing Kitchen Staff (<code>kitchen_staff</code>)</h3>
+    <pre><code>-- View all staff
+SELECT * FROM canteen_db.kitchen_staff;
+
+-- Add a new chef
+INSERT INTO canteen_db.kitchen_staff (full_name, email, role, is_active)
+VALUES ('Vikram Singh', 'vikram.chef@canteen.campus.edu', 'Cook', 1);
+
+-- Promote staff to Canteen Manager
+UPDATE canteen_db.kitchen_staff 
+SET role = 'Canteen Manager' 
+WHERE email = 'shagun.24bcy10379@vitbhopal.ac.in';
+
+-- Delete staff
+DELETE FROM canteen_db.kitchen_staff WHERE email = 'vikram.chef@canteen.campus.edu';</code></pre>
+
+    <h3>3. Managing Canteen Menu & Dishes (<code>menu_items</code>)</h3>
+    <pre><code>-- View all dishes
+SELECT item_id, item_name, price, is_available FROM canteen_db.menu_items;
+
+-- Add a new dish (1=South Indian, 2=North Indian, 3=Snacks, 4=Beverages)
+INSERT INTO canteen_db.menu_items (category_id, item_name, description, price, preparation_time_mins, is_available)
+VALUES (3, 'Veg Grilled Sandwich', 'Toasted triple-layer sandwich with fresh veggies', 60.00, 8, 1);
+
+-- Update dish price (automatically recorded in price_audit_log via Trigger)
+UPDATE canteen_db.menu_items 
+SET price = 70.00 
+WHERE item_name = 'Masala Dosa';
+
+-- Mark dish as Sold Out (0) or Available (1)
+UPDATE canteen_db.menu_items 
+SET is_available = 0 
+WHERE item_name = 'Mango Lassi';
+
+-- Delete dish
+DELETE FROM canteen_db.menu_items WHERE item_name = 'Veg Grilled Sandwich';</code></pre>
+
+    <h3>4. Managing Raw Kitchen Stock (<code>ingredients</code>)</h3>
+    <pre><code>-- View inventory levels
+SELECT ingredient_id, ingredient_name, current_stock, unit, min_threshold 
+FROM canteen_db.ingredients;
+
+-- Restock ingredients (e.g. Add 5,000 grams of Paneer)
+UPDATE canteen_db.ingredients 
+SET current_stock = current_stock + 5000.00 
+WHERE ingredient_name = 'Paneer';
+
+-- Add new raw material
+INSERT INTO canteen_db.ingredients (ingredient_name, unit, current_stock, min_threshold, cost_per_unit)
+VALUES ('Butter', 'grams', 3000.00, 500.00, 0.60);</code></pre>
+
+    <h3>5. Tracking Orders & Tokens (<code>orders</code>)</h3>
+    <pre><code>-- View active kitchen queue orders by Token Number
+SELECT order_id AS token_no, status, total_amount, order_date 
+FROM canteen_db.orders 
+WHERE status != 'Picked Up' 
+ORDER BY order_id ASC;
+
+-- Advance order status
+UPDATE canteen_db.orders 
+SET status = 'Ready' 
+WHERE order_id = 1;</code></pre>
+
+    <div class="success-box">
+        <strong>Instant Web Application Synchronization:</strong> Any changes made in MySQL Workbench (e.g. updating wallet balance, adding dishes, changing prices, or restocking ingredients) reflect in the web application immediately upon page refresh!
+    </div>
+
+</body>
+</html>

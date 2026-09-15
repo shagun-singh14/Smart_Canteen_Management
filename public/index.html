@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Canteen System</title>
+    <meta name="description" content="Digital Canteen Portal with Student Google Login, Token Numbers, Live Kitchen Queue, and Real-time Stock Management.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- GLOBAL TOP HEADER -->
+        <header class="app-header">
+            <div class="header-container">
+                <div class="header-brand" onclick="navigateToPortalSelect()">
+                    <div class="brand-icon">🍔</div>
+                    <div>
+                        <h1 class="brand-title">Smart Canteen System</h1>
+                        <span class="brand-subtitle">Digital Ordering & Kitchen Display System</span>
+                    </div>
+                </div>
+
+                <div class="header-controls">
+                    <!-- Dynamic User Profile / Logout (Visible when logged in) -->
+                    <div id="userProfileHeader" class="user-profile-header" style="display: none;">
+                        <div class="user-avatar" id="userAvatar">👨‍🎓</div>
+                        <div class="user-meta">
+                            <span class="user-name" id="userName">Student</span>
+                            <span class="user-sub" id="userSub">23BCE1001</span>
+                        </div>
+                        <button class="btn btn-outline btn-sm" onclick="logout()">🚪 Exit</button>
+                    </div>
+
+                    <!-- Student Cart Button -->
+                    <button id="cartToggleBtn" class="btn btn-primary cart-btn" style="display: none;" onclick="toggleCartDrawer()">
+                        🛒 Tray <span id="cartCountBadge" class="badge">0</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+
+        <!-- ============================================================
+             VIEW 1: PORTAL SELECTION & GOOGLE SIGN-IN SCREEN
+             ============================================================ -->
+        <section id="portalSelectScreen" class="screen-view active">
+            <div class="landing-hero">
+                <div class="badge-pill">SMART CAMPUS CANTEEN</div>
+                <h2 class="hero-title">Welcome to Smart Campus Canteen</h2>
+                <p class="hero-subtitle">
+                    Select your portal to sign in with your registered campus account.
+                </p>
+            </div>
+
+            <div class="portals-container">
+                <!-- Portal Card 1: Student -->
+                <div class="portal-card student-card" onclick="openGoogleAuthModal('student')">
+                    <div class="portal-card-badge">FOR STUDENTS</div>
+                    <div class="portal-icon">🎓</div>
+                    <h3>Student Ordering Portal</h3>
+                    <p>Browse live digital menu, customize items, checkout with campus wallet/UPI, and get your real-time <strong>Token Number</strong>.</p>
+                    <div class="portal-features">
+                        <span>✓ Live Menu & Stock</span>
+                        <span>✓ Token Number Generation</span>
+                        <span>✓ Real-time Order Tracker</span>
+                    </div>
+                    <button class="btn btn-primary btn-block google-cta-btn">
+                        <svg class="google-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+                        Sign in as Student
+                    </button>
+                </div>
+
+                <!-- Portal Card 2: Kitchen Staff -->
+                <div class="portal-card kitchen-card" onclick="openGoogleAuthModal('kitchen')">
+                    <div class="portal-card-badge">FOR CANTEEN STAFF</div>
+                    <div class="portal-icon">👨‍🍳</div>
+                    <h3>Kitchen & Chef Portal</h3>
+                    <p>Live Kitchen Display System (KDS), manage queue by <strong>Token Number</strong>, update dish progress, and manage recipe inventory.</p>
+                    <div class="portal-features">
+                        <span>✓ Live Token Queue</span>
+                        <span>✓ Automatic Recipe (BOM) Deduction</span>
+                        <span>✓ Real-time Kitchen Display</span>
+                    </div>
+                    <button class="btn btn-outline btn-block google-cta-btn">
+                        <svg class="google-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+                        Sign in as Kitchen Staff
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ============================================================
+             VIEW 2: STUDENT PORTAL SCREEN
+             ============================================================ -->
+        <section id="studentPortalScreen" class="screen-view">
+            <!-- Student Header Banner with Balance & Active Token Quick Peek -->
+            <div class="student-hero-banner">
+                <div>
+                    <span class="text-muted">Welcome back,</span>
+                    <h2 id="studentWelcomeName" class="student-display-name">Aarav Sharma</h2>
+                    <span class="reg-pill" id="studentRegPill">23BCE1001</span>
+                </div>
+                <div class="wallet-balance-box">
+                    <span class="wallet-label">Campus Wallet Balance</span>
+                    <span class="wallet-val" id="studentWalletVal">₹450.00</span>
+                </div>
+            </div>
+
+            <!-- LIVE TOKEN TRACKER SECTION -->
+            <div class="active-tokens-section" id="studentTokensSection">
+                <div class="section-title-row">
+                    <h3>🎫 Your Active Token Number</h3>
+                    <span class="badge" id="activeTokenCount">0 Active</span>
+                </div>
+                <div id="studentTokenCards" class="token-cards-container">
+                    <div class="empty-tokens-msg">No active orders right now. Order from the menu below to receive your Token Number!</div>
+                </div>
+            </div>
+
+            <!-- Menu Category Pills -->
+            <div class="section-divider">
+                <h3>🍽️ Canteen Menu Catalog</h3>
+                <div class="category-filters" id="categoryFilters"></div>
+            </div>
+
+            <!-- Menu Grid -->
+            <div class="menu-grid" id="menuGrid">
+                <div class="loading-spinner">Loading delicious menu items...</div>
+            </div>
+        </section>
+
+
+        <!-- ============================================================
+             VIEW 3: KITCHEN & ADMIN PORTAL SCREEN
+             ============================================================ -->
+        <section id="kitchenPortalScreen" class="screen-view">
+            <!-- Kitchen Sub-Navigation Tabs -->
+            <nav class="kitchen-nav-tabs">
+                <button class="k-tab-btn active" data-ktab="kdsTab" onclick="switchKitchenTab('kdsTab')">
+                    🔔 Live Orders Queue <span id="kitchenOrderCountBadge" class="badge">0</span>
+                </button>
+                <button class="k-tab-btn" data-ktab="inventoryTab" onclick="switchKitchenTab('inventoryTab')">
+                    📦 Inventory & Stock <span id="kitchenLowStockBadge" class="badge danger" style="display:none;">0</span>
+                </button>
+                <button class="k-tab-btn" data-ktab="analyticsTab" onclick="switchKitchenTab('analyticsTab')">
+                    📊 Sales Analytics
+                </button>
+            </nav>
+
+            <!-- KITCHEN SUB-TAB 1: LIVE QUEUE (KDS BY TOKEN #) -->
+            <div id="kdsTab" class="kitchen-pane active">
+                <div class="pane-header">
+                    <div>
+                        <h2>Live Kitchen Orders Queue</h2>
+                        <p class="text-muted">Orders organized by <strong>Token Number</strong>. Click to advance cooking stages.</p>
+                    </div>
+                    <button class="btn btn-outline" onclick="loadKitchenQueue()">🔄 Refresh Queue</button>
+                </div>
+
+                <div class="kitchen-columns">
+                    <div class="queue-col">
+                        <div class="queue-col-header placed">
+                            <div class="col-title-wrap">
+                                <span class="col-dot placed"></span>
+                                <h3>Placed Orders</h3>
+                            </div>
+                            <span id="placedCount" class="count-pill">0</span>
+                        </div>
+                        <div id="placedList" class="queue-cards-list"></div>
+                    </div>
+
+                    <div class="queue-col">
+                        <div class="queue-col-header preparing">
+                            <div class="col-title-wrap">
+                                <span class="col-dot preparing"></span>
+                                <h3>Preparing</h3>
+                            </div>
+                            <span id="prepCount" class="count-pill">0</span>
+                        </div>
+                        <div id="preparingList" class="queue-cards-list"></div>
+                    </div>
+
+                    <div class="queue-col">
+                        <div class="queue-col-header ready">
+                            <div class="col-title-wrap">
+                                <span class="col-dot ready"></span>
+                                <h3>Ready for Pickup</h3>
+                            </div>
+                            <span id="readyCount" class="count-pill">0</span>
+                        </div>
+                        <div id="readyList" class="queue-cards-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KITCHEN SUB-TAB 2: INVENTORY & RECIPES (BOM) -->
+            <div id="inventoryTab" class="kitchen-pane">
+                <div class="pane-header">
+                    <div>
+                        <h2>Canteen Inventory & Ingredients</h2>
+                        <p class="text-muted">Stock levels deduct automatically in real-time when orders are placed.</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="openRestockModal()">➕ Restock Raw Materials</button>
+                </div>
+
+                <div id="lowStockBanner" class="alert-banner danger" style="display:none;">
+                    <div class="banner-icon">⚠️</div>
+                    <div class="banner-content">
+                        <strong>Low Stock Warning:</strong>
+                        <span id="lowStockDetails">Some raw ingredients are below minimum threshold!</span>
+                    </div>
+                </div>
+
+                <div class="inventory-grid" id="inventoryGrid"></div>
+            </div>
+
+            <!-- KITCHEN SUB-TAB 3: SALES ANALYTICS -->
+            <div id="analyticsTab" class="kitchen-pane">
+                <div class="pane-header">
+                    <div>
+                        <h2>Canteen Operations & Sales Analytics</h2>
+                        <p class="text-muted">Real-time revenue, rush hours, and customer trends.</p>
+                    </div>
+                    <button class="btn btn-outline" onclick="loadAnalytics()">🔄 Refresh Data</button>
+                </div>
+
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Today's Gross Sales</div>
+                        <div class="kpi-value" id="kpiRevenue">₹0</div>
+                        <div class="kpi-subtext">All confirmed tokens</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Total Orders Placed</div>
+                        <div class="kpi-value" id="kpiOrders">0</div>
+                        <div class="kpi-subtext">Processed today</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Peak Canteen Rush Hour</div>
+                        <div class="kpi-value highlight" id="kpiRushHour">--:--</div>
+                        <div class="kpi-subtext">Calculated live</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Avg Customer Rating</div>
+                        <div class="kpi-value" id="kpiRating">⭐ 0.0</div>
+                        <div class="kpi-subtext" id="kpiRatingCount">Based on 0 reviews</div>
+                    </div>
+                </div>
+
+                <div class="analytics-charts-grid">
+                    <div class="chart-card">
+                        <h3>🏆 Top Bestselling Delicacies</h3>
+                        <p class="text-muted">Most ordered items today</p>
+                        <div class="leaderboard-list" id="topItemsList"></div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3>⚡ Inventory Stock Alerts</h3>
+                        <p class="text-muted">Ingredients at or below minimum threshold</p>
+                        <div id="analyticsAlertsList" class="alert-items-list"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ============================================================
+             MODALS & OVERLAYS
+             ============================================================ -->
+
+        <!-- GOOGLE / EMAIL SIGN-IN MODAL -->
+        <div id="googleAuthModal" class="modal-backdrop" style="display:none;">
+            <div class="modal-card auth-modal-card">
+                <div class="modal-header">
+                    <div class="auth-modal-title">
+                        <svg class="google-icon-sm" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+                        <h3 id="authModalPortalTitle">Sign in with Google</h3>
+                    </div>
+                    <button class="close-btn" onclick="closeGoogleAuthModal()">✕</button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted" style="font-size:0.85rem; margin-bottom: 1.2rem;">
+                        Sign in with your registered campus account to continue:
+                    </p>
+
+                    <div class="form-group">
+                        <label for="authEmailInput">Enter Registered Email:</label>
+                        <input type="email" id="authEmailInput" class="form-control" placeholder="e.g. yourname@campus.edu">
+                    </div>
+
+                    <div id="authErrorMessage" class="alert-box danger" style="display:none;"></div>
+
+                    <!-- Quick Select Registered Account Pills -->
+                    <div class="quick-accounts-section">
+                        <label>Or 1-Click Quick Select Account:</label>
+                        <div id="quickAccountsList" class="quick-accounts-list"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline" onclick="closeGoogleAuthModal()">Cancel</button>
+                    <button class="btn btn-primary" onclick="submitGoogleLogin()">Sign In</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CART DRAWER OVERLAY -->
+        <div id="cartDrawer" class="cart-drawer">
+            <div class="cart-drawer-header">
+                <h3>🛒 Your Canteen Tray</h3>
+                <button class="close-btn" onclick="toggleCartDrawer()">✕</button>
+            </div>
+            <div class="cart-drawer-body">
+                <div id="cartItemsList" class="cart-items-list">
+                    <div class="empty-cart-msg">Your tray is empty. Add dishes from the menu!</div>
+                </div>
+
+                <div class="cart-options">
+                    <div class="form-group">
+                        <label for="orderInstructions">Chef Instructions / Notes:</label>
+                        <input type="text" id="orderInstructions" class="form-control" placeholder="e.g. Less spicy, extra chutney">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="paymentMethodSelect">Payment Method:</label>
+                        <select id="paymentMethodSelect" class="form-control">
+                            <option value="Student Wallet">Campus Student Wallet</option>
+                            <option value="UPI">UPI (Google Pay / PhonePe)</option>
+                            <option value="Card">Debit / Credit Card</option>
+                            <option value="Cash">Cash at Counter</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="cart-drawer-footer">
+                <div class="cart-total-row">
+                    <span>Grand Total:</span>
+                    <strong id="cartTotalAmount">₹0.00</strong>
+                </div>
+                <button id="checkoutBtn" class="btn btn-primary btn-block" onclick="placeOrder()">
+                    ⚡ Place Order & Get Token Number
+                </button>
+            </div>
+        </div>
+        <div id="cartOverlay" class="cart-backdrop" onclick="toggleCartDrawer()"></div>
+
+        <!-- ORDER RECEIPT & TOKEN MODAL -->
+        <div id="receiptModal" class="modal-backdrop" style="display:none;">
+            <div class="modal-card receipt-card">
+                <div class="modal-header">
+                    <h3>🎉 Order Placed & Token Issued!</h3>
+                    <button class="close-btn" onclick="closeReceiptModal()">✕</button>
+                </div>
+                <div class="modal-body" id="receiptModalBody"></div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-block" onclick="closeReceiptModal()">Track Token Status</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESTOCK MODAL -->
+        <div id="restockModal" class="modal-backdrop" style="display:none;">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <h3>➕ Restock Raw Material</h3>
+                    <button class="close-btn" onclick="closeRestockModal()">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="restockSelect">Select Ingredient:</label>
+                        <select id="restockSelect" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="restockQuantity">Restock Quantity:</label>
+                        <input type="number" id="restockQuantity" class="form-control" placeholder="e.g. 5000" min="1">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline" onclick="closeRestockModal()">Cancel</button>
+                    <button class="btn btn-primary" onclick="submitRestock()">Confirm Restock</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- FEEDBACK MODAL -->
+        <div id="feedbackModal" class="modal-backdrop" style="display:none;">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <h3>⭐ Rate Your Canteen Meal</h3>
+                    <button class="close-btn" onclick="closeFeedbackModal()">✕</button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="feedbackOrderId">
+                    <div class="rating-stars" id="starContainer">
+                        <span class="star" onclick="setStar(1)">★</span>
+                        <span class="star" onclick="setStar(2)">★</span>
+                        <span class="star" onclick="setStar(3)">★</span>
+                        <span class="star" onclick="setStar(4)">★</span>
+                        <span class="star active" onclick="setStar(5)">★</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="feedbackComment">Your Review:</label>
+                        <textarea id="feedbackComment" class="form-control" rows="3" placeholder="Taste, hygiene, preparation speed..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline" onclick="closeFeedbackModal()">Skip</button>
+                    <button class="btn btn-primary" onclick="submitFeedback()">Submit Review</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

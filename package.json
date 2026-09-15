@@ -1,0 +1,27 @@
+{
+  "name": "smart-canteen-management-system",
+  "version": "1.0.0",
+  "description": "Smart Canteen Management System with MySQL and CSE3001 Units 1-5 syllabus demonstrations",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "init-db": "node server/setup-db.js"
+  },
+  "keywords": [
+    "canteen",
+    "mysql",
+    "dbms",
+    "cse3001",
+    "transactions",
+    "triggers"
+  ],
+  "author": "Smart Canteen Team",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mysql2": "^3.9.8"
+  }
+}
