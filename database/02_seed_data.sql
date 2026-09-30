@@ -11,11 +11,11 @@ USE canteen_db;
 -- 1. SEED STUDENTS
 -- ------------------------------------------------------------
 INSERT INTO students (reg_no, full_name, email, phone, wallet_balance) VALUES
+('24BCY10379', 'Shagun Singh', 'shagun.24bcy10379@vitbhopal.ac.in', '9876543219', 1000.00),
 ('23BCE1001', 'Aarav Sharma', 'aarav.sharma@vitstudent.ac.in', '9876543210', 450.00),
 ('23BCE1045', 'Ananya Iyer', 'ananya.iyer@vitstudent.ac.in', '9876543211', 820.00),
 ('23BCE1120', 'Rohan Verma', 'rohan.verma@vitstudent.ac.in', '9876543212', 310.00),
-('23BCE1289', 'Sneha Patel', 'sneha.patel@vitstudent.ac.in', '9876543213', 950.00),
-('23BCE1344', 'Vikramaditya Rao', 'vikram.rao@vitstudent.ac.in', '9876543214', 150.00);
+('23BCE1289', 'Sneha Patel', 'sneha.patel@vitstudent.ac.in', '9876543213', 950.00);
 
 -- ------------------------------------------------------------
 -- 2. SEED CATEGORIES
@@ -172,7 +172,5 @@ INSERT INTO payments (order_id, payment_method, payment_status, amount, transact
 -- 7. SEED KITCHEN STAFF (Staff Authentication)
 -- ------------------------------------------------------------
 INSERT INTO kitchen_staff (full_name, email, role, is_active) VALUES
-('Chef Ramesh Kumar', 'chef.ramesh@canteen.vit.ac.in', 'Head Chef', TRUE),
-('Suresh Canteen Manager', 'manager@canteen.vit.ac.in', 'Canteen Manager', TRUE),
-('Priya Cook', 'cook.priya@canteen.vit.ac.in', 'Cook', TRUE);
+('Shagun Singh', 'shagun.24bcy10379@vitbhopal.ac.in', 'Head Chef', TRUE);
 

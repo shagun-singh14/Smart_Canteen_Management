@@ -20,15 +20,14 @@ const dbConfig = {
 // In-memory mock store for instant testing if MySQL credentials are pending
 let mockDb = {
     students: [
-        { student_id: 1, reg_no: '23BCE1001', full_name: 'Aarav Sharma', email: 'aarav.sharma@vitstudent.ac.in', phone: '9876543210', wallet_balance: 450.00 },
-        { student_id: 2, reg_no: '23BCE1045', full_name: 'Ananya Iyer', email: 'ananya.iyer@vitstudent.ac.in', phone: '9876543211', wallet_balance: 820.00 },
-        { student_id: 3, reg_no: '23BCE1120', full_name: 'Rohan Verma', email: 'rohan.verma@vitstudent.ac.in', phone: '9876543212', wallet_balance: 310.00 },
-        { student_id: 4, reg_no: '23BCE1289', full_name: 'Sneha Patel', email: 'sneha.patel@vitstudent.ac.in', phone: '9876543213', wallet_balance: 950.00 }
+        { student_id: 1, reg_no: '24BCY10379', full_name: 'Shagun Singh', email: 'shagun.24bcy10379@vitbhopal.ac.in', phone: '9876543219', wallet_balance: 1000.00 },
+        { student_id: 2, reg_no: '23BCE1001', full_name: 'Aarav Sharma', email: 'aarav.sharma@vitstudent.ac.in', phone: '9876543210', wallet_balance: 450.00 },
+        { student_id: 3, reg_no: '23BCE1045', full_name: 'Ananya Iyer', email: 'ananya.iyer@vitstudent.ac.in', phone: '9876543211', wallet_balance: 820.00 },
+        { student_id: 4, reg_no: '23BCE1120', full_name: 'Rohan Verma', email: 'rohan.verma@vitstudent.ac.in', phone: '9876543212', wallet_balance: 310.00 },
+        { student_id: 5, reg_no: '23BCE1289', full_name: 'Sneha Patel', email: 'sneha.patel@vitstudent.ac.in', phone: '9876543213', wallet_balance: 950.00 }
     ],
     kitchen_staff: [
-        { staff_id: 1, full_name: 'Chef Ramesh Kumar', email: 'chef.ramesh@canteen.vit.ac.in', role: 'Head Chef', is_active: true },
-        { staff_id: 2, full_name: 'Suresh Canteen Manager', email: 'manager@canteen.vit.ac.in', role: 'Canteen Manager', is_active: true },
-        { staff_id: 3, full_name: 'Priya Cook', email: 'cook.priya@canteen.vit.ac.in', role: 'Cook', is_active: true }
+        { staff_id: 1, full_name: 'Shagun Singh (Head Chef)', email: 'shagun.24bcy10379@vitbhopal.ac.in', role: 'Head Chef', is_active: true }
     ],
     categories: [
         { category_id: 1, category_name: 'South Indian', description: 'Crispy dosas, fluffy idlis, sambar' },
